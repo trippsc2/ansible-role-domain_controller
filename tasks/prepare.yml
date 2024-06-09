@@ -1,0 +1,55 @@
+---
+- name: Ensure the required NuGet package provider version is installed
+  ansible.windows.win_powershell:
+    script: |
+      $Ansible.Changed = $false
+
+      try {
+        $nuget = Get-PackageProvider -Name Nuget
+
+        if ($nuget.Version -lt '2.8.5.201') {
+          $Ansible.Changed = $true
+        }
+      }
+      catch {
+        $Ansible.Changed = $true
+      }
+
+      if ($Ansible.Changed -and -not $Ansible.CheckMode) {
+        Find-PackageProvider -Name Nuget -ForceBootstrap -IncludeDependencies -Force
+      }
+
+- name: Ensure 'PowerShellGet' PowerShell module is installed and updated
+  community.windows.win_psmodule:
+    name: PowerShellGet
+    accept_license: true
+    state: latest
+
+- name: Ensure 'PackageManagement' PowerShell module is installed and updated
+  community.windows.win_psmodule:
+    name: PackageManagement
+    accept_license: true
+    state: latest
+
+- name: Ensure 'PSGallery' PowerShell repository is enabled and trusted
+  community.windows.win_psrepository:
+    name: PSGallery
+    installation_policy: trusted
+    state: present
+
+- name: Ensure 'DnsServerDsc' PowerShell module is installed
+  community.windows.win_psmodule:
+    name: DnsServerDsc
+    state: present
+
+- name: Ensure 'ActiveDirectoryDsc' PowerShell module is installed
+  community.windows.win_psmodule:
+    name: ActiveDirectoryDsc
+    state: present
+
+- name: Install DNS management features
+  ansible.windows.win_feature:
+    name:
+      - RSAT-DNS-Server
+    include_sub_features: true
+    state: present
