@@ -1,13 +1,13 @@
 <!-- BEGIN_ANSIBLE_DOCS -->
 
-# Ansible Role: trippsc2.domain_controller
-This role configures the Windows Server machine as an Active Directory Domain Controller.
+# Ansible Role: ansible-role-domain_controller
+DEPRECATED: Use trippsc2.ad.domain_controller instead.
 
 ## Requirements
 
 | Platform | Versions |
 | -------- | -------- |
-| Windows | 2019, 2022 |
+| Windows | <ul><li>2019</li><li>2022</li></ul> |
 
 ## Dependencies
 

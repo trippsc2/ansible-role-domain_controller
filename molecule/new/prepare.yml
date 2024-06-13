@@ -18,7 +18,7 @@
         )
       changed_when: false
   roles:
-    - role: trippsc2.create_testing_hashicorp_vault
+    - role: trippsc2.hashi_vault.testing
   tasks:
     - name: Create secret engine
       delegate_to: localhost

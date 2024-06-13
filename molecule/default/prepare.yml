@@ -3,14 +3,14 @@
   hosts:
     - existingdc
   roles:
-    - role: trippsc2.create_testing_ad_domain
+    - role: trippsc2.ad.testing_domain_controller
 
 - name: Prepare new DC
   hosts:
     - dc
   gather_facts: false
   roles:
-    - role: trippsc2.join_testing_ad_domain
+    - role: trippsc2.ad.testing_domain_member
       vars:
         dc_inventory_name: existingdc
 
@@ -32,7 +32,7 @@
         )
       changed_when: false
   roles:
-    - role: trippsc2.create_testing_hashicorp_vault
+    - role: trippsc2.hashi_vault.testing
   tasks:
     - name: Create secret engine
       delegate_to: localhost
